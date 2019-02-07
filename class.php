@@ -5,7 +5,7 @@ use Bitrix\Main\Localization\Loc,
     Bitrix\Main\Web\Json,
     Bitrix\Main\UserConsent\Internals\AgreementTable;
 
-class customAuthComponent extends CBitrixComponent
+class customPopupComponent extends CBitrixComponent
 {
     /** @const array (do not const for php version compatibility) */
     protected $needModules = array('iblock');
@@ -76,6 +76,8 @@ class customAuthComponent extends CBitrixComponent
     function executeComponent()
     {
         global $APPLICATION;
+
+        $rand = randString(10);
 
         switch ($this->arParams['QUERY_TYPE']) {
             case 'AGREEMENT':
