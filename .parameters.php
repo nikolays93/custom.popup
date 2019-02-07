@@ -17,9 +17,6 @@ use Bitrix\Main\Loader,
     Bitrix\Main\UserConsent\Internals\AgreementTable;
 
 $arComponentParameters = array(
-    "GROUPS" => array(
-        "ADDITIONAL_SETTINGS",
-    ),
     "PARAMETERS" => array(
         'EVENT' => array(
             'PARENT' => 'BASE',
@@ -32,6 +29,7 @@ $arComponentParameters = array(
                 'CLOSE' => 'При попытке закрыть страницу',
             ),
             'REFRESH' => 'Y',
+            'DEFAULT' => 'BUTTON'
         ),
         'POPUP_TYPE' => array(
             'PARENT' => 'ADDITIONAL_SETTINGS',
@@ -44,7 +42,26 @@ $arComponentParameters = array(
                 'VIDEO' => 'Видео',
                 'IFRAME' => 'Фрэйм',
             ),
+            'DEFAULT' => 'INLINE',
             'REFRESH' => 'Y',
+        ),
+        'POPUP_CLASS' => array(
+            'PARENT' => 'VISUAL',
+            'NAME' => 'Класс всплывающего окна',
+            'TYPE' => 'STRING',
+            'DEFAULT' => 'fancy-modal',
+        ),
+        'POPUP_WIDTH' => array(
+            'PARENT' => 'VISUAL',
+            'NAME' => 'Ширина всплывающего окна',
+            'TYPE' => 'STRING',
+            'DEFAULT' => '650px',
+        ),
+        'POPUP_CONTENT_HEIGHT' => array(
+            'PARENT' => 'VISUAL',
+            'NAME' => 'Макс. высота контента',
+            'TYPE' => 'STRING',
+            'DEFAULT' => '75vh', // For example: 420px, 50vh, calc(50vh - 420px)
         ),
         'ENQUEUE_LIB' => array(
             'PARENT' => 'ADDITIONAL_SETTINGS',
@@ -101,17 +118,17 @@ switch ( $arCurrentValues['EVENT'] ) {
 
     case 'BUTTON':
     default:
-        $arComponentParameters['PARAMETERS']['BUTTON_TYPE'] = array(
+        $arComponentParameters['PARAMETERS']['TARGET_TYPE'] = array(
             'PARENT' => 'BASE',
             'NAME' => 'Стиль элемента',
             'TYPE' => 'LIST',
             'VALUES' => array(
-                'BUTTON' => 'Кнопка',
                 'LINK' => 'Ссылка',
+                'BUTTON' => 'Кнопка',
             ),
         );
 
-        $arComponentParameters['PARAMETERS']['BUTTON'] = array(
+        $arComponentParameters['PARAMETERS']['TARGET_MSG'] = array(
             'PARENT' => 'BASE',
             'NAME' => 'Текст ссылки/кнопки',
             'TYPE' => 'STRING',

@@ -21,18 +21,18 @@ $request->addFilter(new Main\Web\PostDecodeFilter);
 if (!Main\Loader::includeModule('iblock'))
 	return;
 
-// $signer = new Main\Security\Sign\Signer;
-// try
-// {
-// 	$template = $signer->unsign($request->get('template'), 'custom.popup');
-// 	$paramString = $signer->unsign($request->get('parameters'), 'custom.popup');
-// }
-// catch (Main\Security\Sign\BadSignatureException $e)
-// {
-// 	die();
-// }
+$signer = new Main\Security\Sign\Signer;
+try
+{
+	$template = $signer->unsign($request->get('template'), 'custom.popup');
+	$paramString = $signer->unsign($request->get('parameters'), 'custom.popup');
+}
+catch (Main\Security\Sign\BadSignatureException $e)
+{
+	die();
+}
 
-// $parameters = unserialize(base64_decode($paramString));
+$parameters = unserialize(base64_decode($paramString));
 // if (isset($parameters['PARENT_NAME']))
 // {
 // 	$parent = new CBitrixComponent();
@@ -44,10 +44,14 @@ if (!Main\Loader::includeModule('iblock'))
 // 	$parent = false;
 // }
 
+$parameters['POPUP_TYPE'] = 'INLINE';
+$parameters['EVENT']      = 'NONE';
+$parameters['POPUP_ID']   = '';
+
 $parameters['IS_AJAX'] = true;
-// $APPLICATION->IncludeComponent(
-// 	'bitrix:custom.popup',
-// 	$template,
-// 	$parameters,
-// 	$parent
-// );
+$APPLICATION->IncludeComponent(
+	'bitrix:custom.popup',
+	'', // $template
+	$parameters,
+	$parent
+);

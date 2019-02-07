@@ -12,6 +12,26 @@
 /** @var string $componentPath */
 /** @var customOrderComponent $component */
 
-echo "<pre>";
-var_dump($arResult);
-echo "</pre>";
+if('BUTTON' === $arParams['EVENT']) echo $arResult['TARGET'];
+
+?>
+<style>
+    #<?= $arResult['POPUP_ID'] ?> {
+        display: none;
+        max-width: <?= $arResult['POPUP_WIDTH'] ?>;
+    }
+    #<?= $arResult['POPUP_ID'] ?> > div {
+        overflow-y: auto;
+        <? if( $arParams['POPUP_CONTENT_HEIGHT'] ) echo 'max-height: ' . $arParams['POPUP_CONTENT_HEIGHT'] . ';'; ?>
+        margin-right: -24px;
+        padding-right: 24px;
+    }
+</style>
+
+<div id="<?= $arResult['POPUP_ID'] ?>" class="<?= $arParams['POPUP_CLASS'] ?>">
+    <h4 class="mb-2"><?= $arResult['POPUP_NAME'] ?></h4>
+
+    <div class="<?= $arParams['POPUP_CLASS'] ?>__text">
+        <?= $arResult['POPUP_TEXT'] ?>
+    </div>
+</div>

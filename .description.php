@@ -2,7 +2,7 @@
 
 $arComponentDescription = array(
 	"NAME" => 'Custom popups',
-	"DESCRIPTION" => 'Private popup/modals component',
+	"DESCRIPTION" => 'Private popup/modals component (ALPHA!)',
 	"ICON" => "/images/icon.gif",
 	"SORT" => 10,
 	"CACHE_PATH" => "Y",
