@@ -215,7 +215,8 @@ else {
             /**
              * @var array List sections id array by selected IBLOCK_ID
              */
-            $arSections = array();
+            $arSections = array("" => "Все категории");
+            // $arSections["-1"] = 'Без категории';
             if( !empty($arCurrentValues['IBLOCK_ID']) ) {
                 $rsSections = Iblock\SectionTable::getList( array(
                     'select' => array('ID', 'NAME'),
@@ -246,6 +247,14 @@ else {
                             (int) $arCurrentValues['SECTION_ID']
                     );
                 }
+                /**
+                 * @todo
+                 */
+                // elseif ("-1" === $arCurrentValues['SECTION_ID']) {
+                //     $arElementsFilter[] = array(
+                //         'IBLOCK_SECTION_ID' => ''
+                //     );
+                // }
 
                 $rsElements = Iblock\ElementTable::getList( array(
                     'select' => array('ID', 'NAME'),

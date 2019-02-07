@@ -3,6 +3,7 @@
 use Bitrix\Main\Localization\Loc,
     Bitrix\Main\Loader,
     Bitrix\Main\Web\Json,
+    Bitrix\Iblock,
     Bitrix\Main\UserConsent\Internals\AgreementTable;
 
 class customPopupComponent extends CBitrixComponent
@@ -59,7 +60,6 @@ class customPopupComponent extends CBitrixComponent
             return false;
         }
 
-        $arAgreement = array();
         $rsAgreement = AgreementTable::getList( array(
             'select' => array('ID', 'NAME', 'ACTIVE', 'AGREEMENT_TEXT'),
             'filter' => array('ID' => (int) $this->arParams['AGREEMENT_ID']),
@@ -71,6 +71,25 @@ class customPopupComponent extends CBitrixComponent
 
     function queryIblock()
     {
+        if( !(int) $this->arParams['IBLOCK_ID'] ) {
+            $this->errors['-2'] = 'Fail IBLOCK_ID validation.';
+            return false;
+        }
+
+        if( !(int) $this->arParams['ELEMENT_ID'] ) {
+            $this->errors['-3'] = 'Fail ELEMENT_ID validation.';
+            return false;
+        }
+
+        $rsElement = Iblock\ElementTable::getList( array(
+            'select' => array('IBLOCK_ID', 'ID', 'NAME', 'PREVIEW_TEXT'),
+            'filter' => array(
+                'IBLOCK_ID' => (int) $this->arParams['IBLOCK_ID'],
+                'ID' => (int) $this->arParams['ELEMENT_ID'],
+            ),
+        ) );
+
+        return $rsElement->fetch();
     }
 
     function executeComponent()
@@ -151,8 +170,10 @@ class customPopupComponent extends CBitrixComponent
         else {
             $this->arResult['ERRORS'] = $this->errors;
 
-            $type = strtolower($arParams['POPUP_TYPE']);
-            $this->includeComponentTemplate( in_array($type, array('ajax')) ? $type : null );
+            if( !empty($this->arResult['POPUP_NAME']) || !empty($this->arResult['POPUP_TEXT']) ) {
+                $type = strtolower($arParams['POPUP_TYPE']);
+                $this->includeComponentTemplate( in_array($type, array('ajax')) ? $type : null );
+            }
         }
     }
 }
